@@ -17,13 +17,9 @@ API สำหรับเกมจับคู่การ์ด ใช้ Node.
 npm ci
 ```
 
-2) กำหนดตัวแปรแวดล้อมในไฟล์ `.env`
-```env
-PORT=8000
-SECRET_KEY=change-me-long-random
-DECK_EXPIRES_MIN=10
-# ใช้ฐานข้อมูล Postgres ที่รันบนเครื่อง
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cardmatch?schema=public"
+2) คัดลอกไฟล์ตัวอย่าง env แล้วปรับค่าให้เหมาะสม
+```bash
+cp .env.example .env
 ```
 
 ## รันฐานข้อมูล (PostgreSQL)
