@@ -2,22 +2,24 @@ version: "3.9"
 
 services:
   carddb:
-    image: postgres:16
+    image: mariadb:10.11
     container_name: carddb
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-cardmatch}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-auma_cardmatch}
+      MYSQL_USER: ${MYSQL_USER:-auma_postgres}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MARIADB_AUTO_UPGRADE: ${MARIADB_AUTO_UPGRADE:-1}
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - carddb_data:/var/lib/postgresql/data
+      - carddb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
 
 volumes:
   carddb_data:

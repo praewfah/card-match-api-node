@@ -1,6 +1,6 @@
 # Card Match API (Node + Express + Prisma)
 
-API สำหรับเกมจับคู่การ์ด ใช้ Node.js, Express และ Prisma เชื่อมต่อ PostgreSQL
+API สำหรับเกมจับคู่การ์ด ใช้ Node.js, Express และ Prisma เชื่อมต่อ MariaDB (รองรับผ่านไดรเวอร์ MySQL ของ Prisma)
 
 ## คุณสมบัติ
 - สร้างเกมใหม่และรับ token สำหรับสำรับไพ่
@@ -22,14 +22,22 @@ npm ci
 cp .env.example .env
 ```
 
-## รันฐานข้อมูล (PostgreSQL)
+## รันฐานข้อมูล (MariaDB)
 ใช้ Docker Compose เพื่อสร้างฐานข้อมูลชื่อ `carddb`
 ```bash
 docker compose up -d carddb
 ```
 
-- ค่าเริ่มต้น: `POSTGRES_USER=postgres`, `POSTGRES_PASSWORD=postgres`, `POSTGRES_DB=cardmatch`
-- สามารถปรับค่าผ่านไฟล์ `.env` ได้
+- ค่าเริ่มต้นสำหรับ MariaDB (แก้ไขได้ใน `.env`):
+  - `MYSQL_ROOT_PASSWORD=root`
+  - `MYSQL_DATABASE=auma_cardmatch`
+  - `MYSQL_USER=auma_postgres`
+  - `MYSQL_PASSWORD=password`
+
+- ตั้งค่า `DATABASE_URL` เป็นรูปแบบ MySQL (ใช้กับ MariaDB ได้) ใน `.env`:
+```env
+DATABASE_URL="mysql://auma_postgres:password@localhost:3306/auma_cardmatch"
+```
 
 ## Prisma (สคีมา/ไมเกรชัน)
 สร้างตารางและ generate client
