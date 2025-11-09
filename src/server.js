@@ -56,6 +56,7 @@ function getClientIp(req) {
 
 app.post("/game/start", async (req, res) => {
   try {
+    console.log("➡️ /game/start called", req.body);
     const { device_id, num_pairs = 8 } = req.body;
     if (!device_id) return res.status(400).json({ detail: "device_id is required" });
 
@@ -88,7 +89,7 @@ app.post("/game/start", async (req, res) => {
       expires_at: expiresAt.toISOString(),
     });
   } catch (err) {
-    console.error(err);
+    console.error("❌ /game/start error:", err.message);
     res.status(500).json({ detail: "Internal server error" });
   }
 });
@@ -169,6 +170,18 @@ app.get("/leaderboard/top3", async (req, res) => {
     created_at: r.created_at,
   }));
   res.json(result);
+});
+
+// log ทุก request แบบง่าย ๆ
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
+// ตัวจับ error ทั้งหมด
+app.use((err, req, res, next) => {
+  console.error("🔥 Unhandled error:", err);
+  res.status(500).json({ error: "Internal Server Error" });
 });
 
 app.listen(PORT, () => {
